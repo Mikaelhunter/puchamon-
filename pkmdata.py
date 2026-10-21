@@ -17,7 +17,6 @@ if st.sidebar.checkbox("Mostrar todos los pokemon"):
 
 def filtrar_por_nombre(df, texto):
     return df[df["Pokemon_Name"].str.contains(texto, case=False, na=False, regex=False)]
-
 titulo = st.sidebar.text_input("Nombre del pokemon:")
 if st.sidebar.button("Buscar pokemon"):
     resultado = filtrar_por_nombre(pkm_data, titulo)
@@ -25,16 +24,15 @@ if st.sidebar.button("Buscar pokemon"):
     st.write(f"Encontrados:,{resultado.shape[0]}")
     st.dataframe(resultado)
 
-def filtrar_por_tipo_primario(df, Primary_Type):
-    return df[df["tipo"] == Primary_Type]
-
-tipo = st.sidebar.selectbox(
-    "Seleccionar tipo",
-    sorted(pkm_data["tipo"].dropna().unique())
+def filtrar_por_tipo(df, Primary_Type):
+    return df[df["Primary_Type"] == Primary_Type]
+Primary_Type = st.sidebar.selectbox(
+    "Seleccionar tipo primario",
+    sorted(pkm_data["Primary_Type"].dropna().unique())
 )
-
-if st.sidebar.button("Seleccionar tipo"):
-  resultado = filtrar_por_tipo_primario(pkm_data, Primary_Type)
-  st.subheader(f"Pokemon de tipo {tipo}")
+if st.sidebar.button("Seleccionar tipo primario"):
+  resultado = filtrar_por_tipo(pkm_data, Primary_Type)
+  st.subheader(f"Pokemon del tipo {Primary_Type}")
   st.write(f"Total de pokemon:{resultado.shape[0]}" )
   st.dataframe(resultado)
+
