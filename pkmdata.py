@@ -37,10 +37,25 @@ if st.sidebar.button("Seleccionar tipo primario"):
   st.write(f"Total de pokemon:{resultado.shape[0]}" )
   st.dataframe(resultado)
 
-Base_Stat_Total = st.expander("Filtrar por stats totales", True)
-fare_min = Base_Stat_Total.slider("Stats minimas", min_value=float(pkm_data['Base_Stat_Total'].min()), max_value=float(pkm_data['Base_Stat_Total'].max()))
-fare_max = Base_Stat_Total.slider("Stats maximas", min_value=float(pkm_data['Base_Stat_Total'].min()), max_value=float(pkm_data['Base_Stat_Total'].max()))
-subset_fare = pkm_data[(pkm_data['Base_Stat_Total'] <= fare_max) & (fare_min <= pkm_data['Base_Stat_Total'])]
-st.dataframe(subset_fare)
+def filtrar_por_stats(df, minimo, maximo):
+    return df[(df["Base_Stat_Total"] >= minimo) & (df["Base_Stat_Total"] <= maximo)]
 
+cal_min, cal_max = st.sidebar.slider("Stats totales:", 175, 1125, (175, 1125))
+if st.sidebar.button("Buscar por stats totales"):
+    resultado = filtrar_por_stats(pkm_data, cal_min, cal_max)
+    st.subheader("Resultado de la búsqueda")
+    st.write(f"Total de pokemon: {resultado.shape[0]}")
+    st.dataframe(resultado)
+
+def filtrar_por_juego(df, Games_of_Origin):
+    return df[df["Games_of_Origin"] == Games_of_Origin]
+Games_of_Origin = st.sidebar.selectbox(
+    "Seleccionar juego de origen",
+    sorted(pkm_data["Games_of_Origin"].dropna().unique())
+)
+if st.sidebar.button("Seleccionar juego de origen"):
+  resultado = filtrar_por_juego(pkm_data, Games_of_Origin)
+  st.subheader(f"Pokemon del juego {Games_of_Origin}")
+  st.write(f"Total de pokemon:{resultado.shape[0]}" )
+  st.dataframe(resultado)
 
