@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
 
 @st.cache_data
 def load_data(nrows=1383):
@@ -35,4 +36,11 @@ if st.sidebar.button("Seleccionar tipo primario"):
   st.subheader(f"Pokemon del tipo {Primary_Type}")
   st.write(f"Total de pokemon:{resultado.shape[0]}" )
   st.dataframe(resultado)
+
+Base_Stat_Total = st.expander("Filtrar por stats totales", True)
+fare_min = Base_Stat_Total.slider("Stats minimas", min_value=float(pkm_data['Base_Stat_Total'].min()), max_value=float(pkm_data['Base_Stat_Total'].max()))
+fare_max = Base_Stat_Total.slider("Stats maximas", min_value=float(pkm_data['Base_Stat_Total'].min()), max_value=float(pkm_data['Base_Stat_Total'].max()))
+subset_fare = pkm_data[(pkm_data['Base_Stat_Total'] <= fare_max) & (fare_min <= pkm_data['Base_Stat_Total'])]
+st.dataframe(subset_fare)
+
 
