@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 @st.cache_data
 def load_data(nrows=1383):
@@ -59,3 +60,38 @@ if st.sidebar.button("Seleccionar juego de origen"):
   st.write(f"Total de pokemon:{resultado.shape[0]}" )
   st.dataframe(resultado)
 
+fig, ax = plt.subplots()
+ax.hist(pkm_data.Catch_Rate)
+st.header("Cantidad de pokemon por ratio de captura")
+st.pyplot(fig)
+
+fig2, ax2 = plt.subplots()
+y_pos = pkm_data['Primary_Type']
+x_pos = pkm_data['Attack_Stat']
+ax2.barh(y_pos, x_pos)
+ax2.set_ylabel("Tipo")
+ax2.set_xlabel("stat de ataque")
+ax2.set_title('Que tipo tiene en promedio mas ataque')
+st.header("Grafica de Barras de pokemon")
+st.pyplot(fig2)
+
+fig3, ax3 = plt.subplots()
+ax3.scatter(pkm_data.Base_Stat_Total, pkm_data.Primary_Type)
+ax3.set_xlabel("tipo de crecimiento")
+ax3.set_ylabel("stats totales")
+st.header("Grafica de Dispersión")
+st.pyplot(fig3)
+
+
+
+st.title("Miguel Angel Vega Romero")
+st.header("Matrícula: S26004660")
+st.header("Mapa de mi localidad")
+
+map_data = pd.DataFrame(
+  np.random.randn(1, 2) / [1500, 1500] + [18.8950139, -97.0383833],
+  columns=['lat', 'lon'])
+
+st.title("Localidad de Buena Vista, Ixtac.")
+
+st.map(map_data)
